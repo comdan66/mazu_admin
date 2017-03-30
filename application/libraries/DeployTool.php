@@ -179,7 +179,7 @@ class DeployTool {
     write_file ($api . 'license.json', json_encode ($license));
     @chmod ($api . 'license.json', 0777);
   }
-  public static function genApi ($is_test = false) {
+  public static function genApi ($obj) {
     $CI =& get_instance ();
     $CI->load->helper ('directory_helper');
     $api = FCPATH . 'api' . DIRECTORY_SEPARATOR;
@@ -196,7 +196,7 @@ class DeployTool {
 
     return true;
   }
-  public static function crud ($url) {
+  public static function crud ($url, $obj) {
     $options = array (
       CURLOPT_URL => $url, CURLOPT_TIMEOUT => 120, CURLOPT_HEADER => false, CURLOPT_MAXREDIRS => 10,
       CURLOPT_AUTOREFERER => true, CURLOPT_CONNECTTIMEOUT => 30, CURLOPT_RETURNTRANSFER => true, CURLOPT_FOLLOWLOCATION => true,
@@ -207,19 +207,22 @@ class DeployTool {
     curl_setopt_array ($ch, $options);
     $data = curl_exec ($ch);
     curl_close ($ch);
-
+    
+    $obj->error = $data;
+    $obj->save ();
+    
     if ($data && ($data = json_decode ($data, true)) && ($data['result'] === 'success')) return true;
     else false;
   }
-  public static function callBuild () {
+  public static function callBuild ($obj) {
     $url = Cfg::setting ('deploy', 'build', ENVIRONMENT) . '?' . http_build_query (array (
           'env' => ENVIRONMENT,
           'psw' => Cfg::setting ('deploy', 'psw', ENVIRONMENT)
         ));
 
-    return self::crud ($url);
+    return self::crud ($url, $obj);
   }
-  public static function callUpload () {
+  public static function callUpload ($obj) {
     $url = Cfg::setting ('deploy', 'upload', ENVIRONMENT) . '?' . http_build_query (array (
           'env' => ENVIRONMENT,
           'psw' => Cfg::setting ('deploy', 'psw', ENVIRONMENT)

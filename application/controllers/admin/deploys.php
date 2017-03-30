@@ -69,14 +69,14 @@ class Deploys extends Admin_controller {
     $this->load->library ('DeployTool');
 
     if ($obj->type == Deploy::TYPE_BUILD)
-      if (!(DeployTool::genApi () && DeployTool::callBuild ()))
+      if (!(DeployTool::genApi ($obj) && DeployTool::callBuild ($obj)))
         return redirect_message (array ($this->uri_1), array ('_flash_danger' => '新增失敗！'));
 
     if ($obj->type == Deploy::TYPE_UPLOAD)
-      if (!(DeployTool::genApi () && DeployTool::callUpload ()))
+      if (!(DeployTool::genApi ($obj) && DeployTool::callUpload ($obj)))
         return redirect_message (array ($this->uri_1), array ('_flash_danger' => '新增失敗！'));
 
-    DeployTool::callBuild ();
+    DeployTool::callBuild ($obj);
 
     $obj->is_success = Deploy::SUCCESS_YES;
     if (!Deploy::transaction (function () use ($obj) { return $obj->save (); }))
@@ -87,6 +87,7 @@ class Deploys extends Admin_controller {
   private function _validation_create (&$posts) {
     if (!isset ($posts['type'])) return '沒有選擇 類型！';
     if (!(is_numeric ($posts['type'] = trim ($posts['type'])) && in_array ($posts['type'], array_keys (Deploy::$typeNames)))) return '類型 格式錯誤！';
+    $posts['error'] = '';
     return '';
   }
 }
