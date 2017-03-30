@@ -6,7 +6,7 @@
  * @link        http://www.ioa.tw/
  */
 
-class Users extends User_controller {
+class Users extends Admin_controller {
   private $uri_1 = null;
   private $obj = null;
 
