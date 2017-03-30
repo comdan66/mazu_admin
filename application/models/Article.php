@@ -43,7 +43,7 @@ class Article extends OaModel {
 
     preg_match_all ('/<img\s+alt=""\s+src="(?P<k>([^"\']*))"\s*/', $this->content, $result);
     
-    return $result['k'];    
+    return str_replace ('200h_', '800h_', $result['k']);    
   }
   public function mini_title ($length = 50) {
     if (!isset ($this->title)) return '';
