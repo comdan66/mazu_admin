@@ -31,6 +31,7 @@ Route::group ('admin', function () {
   Route::resourcePagination (array ('authors'), 'authors');
   Route::resourcePagination (array ('licenses'), 'licenses');
   Route::resourcePagination (array ('album', 'images'), 'album_images');
+  Route::resourcePagination (array ('users'), 'users');
 });
 
 Route::group ('api', function () {
