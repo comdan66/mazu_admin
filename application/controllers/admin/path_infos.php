@@ -13,7 +13,7 @@ class Path_infos extends Admin_controller {
   public function __construct () {
     parent::__construct ();
     
-    if (!User::current ()->in_roles (array ('path')))
+    if (!User::current ()->in_roles (array ('maps')))
       return redirect_message (array ('admin'), array ('_flash_danger' => '您的權限不足，或者頁面不存在。'));
     
     $this->uri_1 = 'admin/path_infos';

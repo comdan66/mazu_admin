@@ -39,15 +39,57 @@
                   <input type='checkbox' />
                   <span class='icon-u'>個人管理</span>
                   <ul>
+                    <li><a href="<?php echo $url = base_url ('admin');?>" class='icon-home<?php echo $now_url == $url ? ' active' : '';?>'>後台首頁</a></li>
+                  </ul>
+                </label>
+              </li>
+      <?php }
+            if (User::current ()->in_roles (array ('admin'))) { ?>
+              <li>
+                <label data-role='schedule' data-cnt='0'>
+                  <input type='checkbox' />
+                  <span class='icon-user-secret'>管理員</span>
+                  <ul>
                     <li><a href="<?php echo $url = base_url ('admin', 'deploys');?>" class='icon-pi<?php echo $now_url == $url ? ' active' : '';?>'>部署紀錄</a></li>
-                    <li><a href="<?php echo $url = base_url ('admin', 'articles');?>" class='icon-fa<?php echo $now_url == $url ? ' active' : '';?>'>文章管理</a></li>
+                    <li><a href="<?php echo $url = base_url ('admin', 'users');?>" class='icon-bo<?php echo $now_url == $url ? ' active' : '';?>'>權限管理</a></li>
+                  </ul>
+                </label>
+              </li>
+      <?php }
+            if (User::current ()->in_roles (array ('maps'))) { ?>
+              <li>
+                <label data-role='schedule' data-cnt='0'>
+                  <input type='checkbox' />
+                  <span class='icon-settings'>地圖管理</span>
+                  <ul>
                     <li><a href="<?php echo $url = base_url ('admin', 'paths');?>" class='icon-op<?php echo $now_url == $url ? ' active' : '';?>'>路關管理</a></li>
                     <li><a href="<?php echo $url = base_url ('admin', 'path_infos');?>" class='icon-d2<?php echo $now_url == $url ? ' active' : '';?>'>路關資訊</a></li>
-                    <li><a href="<?php echo $url = base_url ('admin', 'albums');?>" class='icon-ims<?php echo $now_url == $url ? ' active' : '';?>'>相簿管理</a></li>
-                    <li><a href="<?php echo $url = base_url ('admin', 'youtubes');?>" class='icon-youtube<?php echo $now_url == $url ? ' active' : '';?>'>影片管理</a></li>
+                  </ul>
+                </label>
+              </li>
+      <?php }
+            if (User::current ()->in_roles (array ('article'))) { ?>
+              <li>
+                <label data-role='schedule' data-cnt='0'>
+                  <input type='checkbox' />
+                  <span class='icon-f'>文章管理</span>
+                  <ul>
+                    <li><a href="<?php echo $url = base_url ('admin', 'articles');?>" class='icon-fa<?php echo $now_url == $url ? ' active' : '';?>'>文章管理</a></li>
                     <li><a href="<?php echo $url = base_url ('admin', 'homes');?>" class='icon-home<?php echo $now_url == $url ? ' active' : '';?>'>首頁文章</a></li>
                     <li><a href="<?php echo $url = base_url ('admin', 'authors');?>" class='icon-user-secret<?php echo $now_url == $url ? ' active' : '';?>'>關於作者</a></li>
                     <li><a href="<?php echo $url = base_url ('admin', 'licenses');?>" class='icon-c<?php echo $now_url == $url ? ' active' : '';?>'>授權聲明</a></li>
+                  </ul>
+                </label>
+              </li>
+      <?php }
+            if (User::current ()->in_roles (array ('media'))) { ?>
+              <li>
+                <label data-role='schedule' data-cnt='0'>
+                  <input type='checkbox' />
+                  <span class='icon-ims'>影音管理</span>
+                  <ul>
+                    <li><a href="<?php echo $url = base_url ('admin', 'albums');?>" class='icon-ims<?php echo $now_url == $url ? ' active' : '';?>'>相簿管理</a></li>
+                    <li><a href="<?php echo $url = base_url ('admin', 'youtubes');?>" class='icon-youtube<?php echo $now_url == $url ? ' active' : '';?>'>影片管理</a></li>
                   </ul>
                 </label>
               </li>
