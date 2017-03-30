@@ -190,6 +190,7 @@ class DeployTool {
     DeployTool::api_albums ($api);
     DeployTool::api_youtubes ($api);
 
+    DeployTool::api_homes ($api);
     DeployTool::api_authors ($api);
     DeployTool::api_licenses ($api);
 
