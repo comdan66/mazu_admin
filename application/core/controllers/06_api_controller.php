@@ -10,9 +10,13 @@ class Api_controller extends Oa_controller {
 
   public function __construct () {
     parent::__construct ();
+    $http_origin = $_SERVER['HTTP_ORIGIN'];
 
-    if (ENVIRONMENT === 'production') header ("Access-Control-Allow-Origin: https://mazu.ioa.tw");
-    else header ("Access-Control-Allow-Origin: https://dev.mazu.ioa.tw");
+    if (in_array ($http_origin, array ('https://mazu.ioa.tw', 'https://dev.mazu.ioa.tw', 'https://staging.mazu.ioa.tw')))
+        header ("Access-Control-Allow-Origin: " . $http_origin);
+
+    // if (ENVIRONMENT === 'production') header ("Access-Control-Allow-Origin: https://mazu.ioa.tw");
+    // else header ("Access-Control-Allow-Origin: https://mazu.ioa.tw");
 
     $class  = $this->get_class ();
     $method = $this->get_method ();
