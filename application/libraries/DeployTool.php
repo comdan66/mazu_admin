@@ -227,6 +227,6 @@ class DeployTool {
           'env' => ENVIRONMENT,
           'psw' => Cfg::setting ('deploy', 'psw', ENVIRONMENT)
         ));
-    return self::crud ($url);
+    return self::crud ($url, $obj);
   }
 }
