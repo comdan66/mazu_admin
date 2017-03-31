@@ -15,7 +15,7 @@ class Album extends OaModel {
 
   static $has_many = array (
     array ('sources', 'class_name' => 'AlbumSource', 'order' => 'sort ASC'),
-    array ('images', 'class_name' => 'AlbumImage', 'order' => 'sort DESC'),
+    array ('images', 'class_name' => 'AlbumImage', 'order' => 'sort ASC'),
   );
 
   static $belongs_to = array (

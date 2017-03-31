@@ -22,8 +22,8 @@ class DeployTool {
           'id' => $article->id,
           'tag' => $article->tag,
           'title' => $article->title,
-          'content' => preg_replace ('/alt=""/', 'alt="' . $article->title . ' - 北港迎媽祖"', preg_replace ('/alt=""\s+src="(https?:\/\/[a-zA-Z_0-9\.]*\/upload\/ckeditor_images\/name\/([0-9]*)\/([0-9]*)\/([0-9]*)\/([4-9]*)\/[a-zA-Z_0-9]*\.[^\"]*)"/', 'alt="" data-pvid="CkeditorImage-$2$3$4$5" src="$1"', $article->content)),
-          // 'content' => preg_replace ('/alt=""/', 'alt="' . $article->title . ' - 北港迎媽祖"', preg_replace ('/alt=""\s+src="(https:\/\/[a-z\._]*\/upload\/ckeditor_images\/name\/()\/()\/()\/()\/[a-z\_]*\.[^\"]*)"/', 'alt="" 1 src="$1"', $article->content)),
+          'content' => preg_replace ('/alt=""/', 'alt="' . $article->title . ' - 北港迎媽祖"', preg_replace ('/alt=""\s+src="(https?:\/\/[a-zA-Z_0-9\.]*\/u\/ckeditor_images\/name\/([0-9]*)\/([0-9]*)\/([0-9]*)\/([4-9]*)\/[a-zA-Z_0-9]*\.[^\"]*)"/', 'alt="" data-pvid="CkeditorImage-$2$3$4$5" src="$1"', $article->content)),
+          // 'content' => preg_replace ('/alt=""/', 'alt="' . $article->title . ' - 北港迎媽祖"', preg_replace ('/alt=""\s+src="(https:\/\/[a-z\._]*\/u\/ckeditor_images\/name\/()\/()\/()\/()\/[a-z\_]*\.[^\"]*)"/', 'alt="" 1 src="$1"', $article->content)),
           'updated_at' => $article->updated_at->format ('Y-m-d H:i:s'),
           'created_at' => $article->created_at->format ('Y-m-d H:i:s'),
           'pics' => $article->pics (),
@@ -34,7 +34,7 @@ class DeployTool {
               );
           }, $article->sources),
         );
-    }, Article::find ('all', array ('select' => 'id, user_id, tag, title, cover, content, created_at, updated_at', 'include' => array ('user', 'sources'))));
+    }, Article::find ('all', array ('select' => 'id, user_id, tag, title, cover, content, created_at, updated_at', 'order' => 'sort DESC', 'include' => array ('user', 'sources'))));
 
     write_file ($api . 'articles.json', json_encode ($data));
     @chmod ($api . 'articles.json', 0777);
@@ -79,7 +79,7 @@ class DeployTool {
           'id' => $album->id,
           'title' => $album->title,
           // 'content' => preg_replace ('/alt=""/', 'alt="' . $album->title . ' - 北港迎媽祖"', $album->content),
-          'content' => preg_replace ('/alt=""/', 'alt="' . $album->title . ' - 北港迎媽祖"', preg_replace ('/alt=""\s+src="(https?:\/\/[a-zA-Z_0-9\.]*\/upload\/ckeditor_images\/name\/([0-9]*)\/([0-9]*)\/([0-9]*)\/([4-9]*)\/[a-zA-Z_0-9]*\.[^\"]*)"/', 'alt="" data-pvid="CkeditorImage-$2$3$4$5" src="$1"', $album->content)),
+          'content' => preg_replace ('/alt=""/', 'alt="' . $album->title . ' - 北港迎媽祖"', preg_replace ('/alt=""\s+src="(https?:\/\/[a-zA-Z_0-9\.]*\/u\/ckeditor_images\/name\/([0-9]*)\/([0-9]*)\/([0-9]*)\/([4-9]*)\/[a-zA-Z_0-9]*\.[^\"]*)"/', 'alt="" data-pvid="CkeditorImage-$2$3$4$5" src="$1"', $album->content)),
           'pv' => $album->pv,
           'updated_at' => $album->updated_at->format ('Y-m-d H:i:s'),
           'created_at' => $album->created_at->format ('Y-m-d H:i:s'),
@@ -99,9 +99,9 @@ class DeployTool {
               );
           }, $album->sources)
         ) : array ();
-    }, Album::find ('all', array ('select' => 'id, cover, title, content, pv, user_id, updated_at, created_at', 'order' => 'id DESC', 'include' => array ('user', 'sources', 'images'))));
+    }, Album::find ('all', array ('select' => 'id, cover, title, content, pv, user_id, updated_at, created_at', 'order' => 'sort DESC', 'include' => array ('user', 'sources', 'images'))));
 
-    write_file ($api . 'albums.json', json_encode (array_values ($albums)));
+    write_file ($api . 'albums.json', json_encode (array_values (array_filter ($albums))));
     @chmod ($api . 'albums.json', 0777);
   }
   public static function api_youtubes ($api) {
@@ -115,7 +115,7 @@ class DeployTool {
           'vid' => $youtube->vid,
           'title' => $youtube->title,
           // 'content' => preg_replace ('/alt=""/', 'alt="' . $youtube->title . ' - 北港迎媽祖"', $youtube->content),
-          'content' => preg_replace ('/alt=""/', 'alt="' . $youtube->title . ' - 北港迎媽祖"', preg_replace ('/alt=""\s+src="(https?:\/\/[a-zA-Z_0-9\.]*\/upload\/ckeditor_images\/name\/([0-9]*)\/([0-9]*)\/([0-9]*)\/([4-9]*)\/[a-zA-Z_0-9]*\.[^\"]*)"/', 'alt="" data-pvid="CkeditorImage-$2$3$4$5" src="$1"', $youtube->content)),
+          'content' => preg_replace ('/alt=""/', 'alt="' . $youtube->title . ' - 北港迎媽祖"', preg_replace ('/alt=""\s+src="(https?:\/\/[a-zA-Z_0-9\.]*\/u\/ckeditor_images\/name\/([0-9]*)\/([0-9]*)\/([0-9]*)\/([4-9]*)\/[a-zA-Z_0-9]*\.[^\"]*)"/', 'alt="" data-pvid="CkeditorImage-$2$3$4$5" src="$1"', $youtube->content)),
           'pv' => $youtube->pv,
           'updated_at' => $youtube->updated_at->format ('Y-m-d H:i:s'),
           'created_at' => $youtube->created_at->format ('Y-m-d H:i:s'),
@@ -134,7 +134,7 @@ class DeployTool {
               'c1200x630' => $home->cover->url ('1200x630c'),
             ),
           // 'content' => preg_replace ('/alt=""/', 'alt="' . '關於作者' . ' - 北港迎媽祖"', $home->content),
-          'content' => preg_replace ('/alt=""/', 'alt="' . '關於作者' . ' - 北港迎媽祖"', preg_replace ('/alt=""\s+src="(https?:\/\/[a-zA-Z_0-9\.]*\/upload\/ckeditor_images\/name\/([0-9]*)\/([0-9]*)\/([0-9]*)\/([4-9]*)\/[a-zA-Z_0-9]*\.[^\"]*)"/', 'alt="" data-pvid="CkeditorImage-$2$3$4$5" src="$1"', $home->content)),
+          'content' => preg_replace ('/alt=""/', 'alt="' . '關於作者' . ' - 北港迎媽祖"', preg_replace ('/alt=""\s+src="(https?:\/\/[a-zA-Z_0-9\.]*\/u\/ckeditor_images\/name\/([0-9]*)\/([0-9]*)\/([0-9]*)\/([4-9]*)\/[a-zA-Z_0-9]*\.[^\"]*)"/', 'alt="" data-pvid="CkeditorImage-$2$3$4$5" src="$1"', $home->content)),
           'pv' => $home->pv,
           'updated_at' => $home->updated_at->format ('Y-m-d H:i:s'),
           'created_at' => $home->created_at->format ('Y-m-d H:i:s'),
@@ -152,7 +152,7 @@ class DeployTool {
               'c1200x630' => $author->cover->url ('1200x630c'),
             ),
           // 'content' => preg_replace ('/alt=""/', 'alt="' . '關於作者' . ' - 北港迎媽祖"', $author->content),
-          'content' => preg_replace ('/alt=""/', 'alt="' . '關於作者' . ' - 北港迎媽祖"', preg_replace ('/alt=""\s+src="(https?:\/\/[a-zA-Z_0-9\.]*\/upload\/ckeditor_images\/name\/([0-9]*)\/([0-9]*)\/([0-9]*)\/([4-9]*)\/[a-zA-Z_0-9]*\.[^\"]*)"/', 'alt="" data-pvid="CkeditorImage-$2$3$4$5" src="$1"', $author->content)),
+          'content' => preg_replace ('/alt=""/', 'alt="' . '關於作者' . ' - 北港迎媽祖"', preg_replace ('/alt=""\s+src="(https?:\/\/[a-zA-Z_0-9\.]*\/u\/ckeditor_images\/name\/([0-9]*)\/([0-9]*)\/([0-9]*)\/([4-9]*)\/[a-zA-Z_0-9]*\.[^\"]*)"/', 'alt="" data-pvid="CkeditorImage-$2$3$4$5" src="$1"', $author->content)),
           'pv' => $author->pv,
           'updated_at' => $author->updated_at->format ('Y-m-d H:i:s'),
           'created_at' => $author->created_at->format ('Y-m-d H:i:s'),
@@ -170,7 +170,7 @@ class DeployTool {
               'c1200x630' => $license->cover->url ('1200x630c'),
             ),
           // 'content' => preg_replace ('/alt=""/', 'alt="' . '授權聲明' . ' - 北港迎媽祖"', $license->content),
-          'content' => preg_replace ('/alt=""/', 'alt="' . '授權聲明' . ' - 北港迎媽祖"', preg_replace ('/alt=""\s+src="(https?:\/\/[a-zA-Z_0-9\.]*\/upload\/ckeditor_images\/name\/([0-9]*)\/([0-9]*)\/([0-9]*)\/([4-9]*)\/[a-zA-Z_0-9]*\.[^\"]*)"/', 'alt="" data-pvid="CkeditorImage-$2$3$4$5" src="$1"', $license->content)),
+          'content' => preg_replace ('/alt=""/', 'alt="' . '授權聲明' . ' - 北港迎媽祖"', preg_replace ('/alt=""\s+src="(https?:\/\/[a-zA-Z_0-9\.]*\/u\/ckeditor_images\/name\/([0-9]*)\/([0-9]*)\/([0-9]*)\/([4-9]*)\/[a-zA-Z_0-9]*\.[^\"]*)"/', 'alt="" data-pvid="CkeditorImage-$2$3$4$5" src="$1"', $license->content)),
           'pv' => $license->pv,
           'updated_at' => $license->updated_at->format ('Y-m-d H:i:s'),
           'created_at' => $license->created_at->format ('Y-m-d H:i:s'),

@@ -35,6 +35,13 @@
         </div>
       </div>
     </div>
+    
+    <div class='row n2'>
+      <label>相簿內容</label>
+      <div>
+        <textarea name='content' class='pure autosize cke' placeholder='請輸入相簿內容..'><?php echo isset ($posts['content']) ? $posts['content'] : '';?></textarea>
+      </div>
+    </div>
 
     <div class='row n2'>
       <label>圖片</label>
@@ -46,13 +53,6 @@
           <a class='icon-t'></a>
         </div>
 
-      </div>
-    </div>
-    
-    <div class='row n2'>
-      <label>相簿內容</label>
-      <div>
-        <textarea name='content' class='pure autosize cke' placeholder='請輸入相簿內容..'><?php echo isset ($posts['content']) ? $posts['content'] : '';?></textarea>
       </div>
     </div>
 

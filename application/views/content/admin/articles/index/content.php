@@ -50,6 +50,7 @@
           <th width='200'>標題</th>
           <th>內容</th>
           <th width='50'>PV</th>
+          <th width='50' class='right'>排序</th>
           <th width='120' class='right'>預覽/修改/刪除</th>
         </tr>
       </thead>
@@ -69,6 +70,10 @@
               <td><?php echo $obj->mini_title (25);?></td>
               <td><?php echo $obj->mini_content (50);?></td>
               <td><?php echo number_format ($obj->pv);?></td>
+              <td class='right sort_btns'>
+                <a class='icon-tu' href='<?php echo base_url ($uri_1, $obj->id, 'sort', 'up');?>' data-method='post'></a>
+                <a class='icon-td' href='<?php echo base_url ($uri_1, $obj->id, 'sort', 'down');?>' data-method='post'></a>
+              </td>
               <td class='right'>
                 <a class='icon-y' href="<?php echo base_url ($uri_1, $obj->id, 'show');?>" target='_blank'></a>
                 /
@@ -80,7 +85,7 @@
     <?php }
         } else { ?>
           <tr>
-            <td colspan='8' class='no_data'>沒有任何資料。</td>
+            <td colspan='9' class='no_data'>沒有任何資料。</td>
           </tr>
   <?php } ?>
       </tbody>

@@ -44,7 +44,7 @@ class Album_images extends Admin_controller {
 
     $limit = 25;
     $total = AlbumImage::count (array ('conditions' => $conditions));
-    $objs = AlbumImage::find ('all', array ('offset' => $offset < $total ? $offset : 0, 'limit' => $limit, 'include' => array ('user', 'album'), 'order' => 'sort DESC', 'conditions' => $conditions));
+    $objs = AlbumImage::find ('all', array ('offset' => $offset < $total ? $offset : 0, 'limit' => $limit, 'include' => array ('user', 'album'), 'order' => 'sort ASC', 'conditions' => $conditions));
 
     return $this->load_view (array (
         'objs' => $objs,

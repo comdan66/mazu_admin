@@ -18,7 +18,7 @@ class Albums extends Admin_controller {
     
     $this->uri_1 = 'admin/albums';
 
-    if (in_array ($this->uri->rsegments (2, 0), array ('show', 'edit', 'update', 'destroy', 'is_enabled')))
+    if (in_array ($this->uri->rsegments (2, 0), array ('show', 'edit', 'update', 'destroy', 'sort')))
       if (!(($id = $this->uri->rsegments (3, 0)) && ($this->obj = Album::find ('one', array ('conditions' => array ('id = ?', $id))))))
         return redirect_message (array ($this->uri_1), array ('_flash_danger' => '找不到該筆資料。'));
 
@@ -36,7 +36,7 @@ class Albums extends Admin_controller {
 
     $limit = 10;
     $total = Album::count (array ('conditions' => $conditions));
-    $objs = Album::find ('all', array ('offset' => $offset < $total ? $offset : 0, 'limit' => $limit, 'order' => 'id DESC', 'include' => array ('user'), 'conditions' => $conditions));
+    $objs = Album::find ('all', array ('offset' => $offset < $total ? $offset : 0, 'limit' => $limit, 'order' => 'sort DESC', 'include' => array ('user'), 'conditions' => $conditions));
 
     return $this->load_view (array (
         'objs' => $objs,
@@ -65,6 +65,7 @@ class Albums extends Admin_controller {
     if ($msg = $this->_validation_create ($posts, $cover, $images))
       return redirect_message (array ($this->uri_1, 'add'), array ('_flash_danger' => $msg, 'posts' => $posts));
 
+    $posts['sort'] = Album::count ();
     if (!Album::transaction (function () use (&$obj, $posts, $cover) { return verifyCreateOrm ($obj = Album::create (array_intersect_key ($posts, Album::table ()->columns))) && $obj->cover->put ($cover); }))
       return redirect_message (array ($this->uri_1, 'add'), array ('_flash_danger' => '新增失敗！', 'posts' => $posts));
 
@@ -125,6 +126,29 @@ class Albums extends Admin_controller {
         AlbumImage::transaction (function () use ($image, $obj, $posts) { return verifyCreateOrm ($img = AlbumImage::create (array_intersect_key (array ('album_id' => $obj->id, 'title' => '', 'name' => '', 'user_id' => $posts['user_id']), AlbumImage::table ()->columns))) && $img->name->put ($image); });
 
     return redirect_message (array ($this->uri_1), array ('_flash_info' => '更新成功！'));
+  }
+  public function sort ($id, $sort) {
+    $obj = $this->obj;
+
+    if (!in_array ($sort, array ('up', 'down')))
+      return redirect_message (array ($this->uri_1), array ('_flash_danger' => '排序失敗！'));
+
+    $conditions = array ();
+    $total = Album::count (array ('conditions' => $conditions));
+
+    switch ($sort) {
+      case 'up': $sort = $obj->sort; $obj->sort = $obj->sort + 1 >= $total ? 0 : $obj->sort + 1; break;
+      case 'down': $sort = $obj->sort; $obj->sort = $obj->sort - 1 < 0 ? $total - 1 : $obj->sort - 1; break;
+    }
+
+    $change = array ();
+    array_push ($change, array ('id' => $obj->id, 'old' => $sort, 'new' => $obj->sort));
+    OaModel::addConditions ($conditions, 'sort = ?', $obj->sort);
+
+    if (!Album::transaction (function () use ($conditions, $obj, $sort, &$change) { if (($next = Album::find ('one', array ('conditions' => $conditions))) && array_push ($change, array ('id' => $next->id, 'old' => $next->sort, 'new' => $sort))) { $next->sort = $sort; if (!$next->save ()) return false; } return $obj->save (); }))
+      return redirect_message (array ($this->uri_1), array ('_flash_danger' => '排序失敗！'));
+
+    return redirect_message (array ($this->uri_1), array ('_flash_info' => '排序成功！'));
   }
   public function destroy () {
     $obj = $this->obj;
