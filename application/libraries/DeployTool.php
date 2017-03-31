@@ -212,7 +212,12 @@ class DeployTool {
     $obj->save ();
     
     if ($data && ($data = json_decode ($data, true)) && ($data['result'] === 'success')) return true;
-    else false;
+    else {
+      echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
+      var_dump ($data);
+      exit ();
+      return false;
+    };
   }
   public static function callBuild ($obj) {
     $url = Cfg::setting ('deploy', 'build', ENVIRONMENT) . '?' . http_build_query (array (
