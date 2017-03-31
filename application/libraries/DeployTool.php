@@ -224,9 +224,6 @@ class DeployTool {
           'env' => ENVIRONMENT,
           'psw' => Cfg::setting ('deploy', 'psw', ENVIRONMENT)
         ));
-    echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
-    var_dump (Cfg::setting ('deploy', 'psw', ENVIRONMENT));
-    exit ();
 
     return self::crud ($url, $obj);
   }
