@@ -207,9 +207,7 @@ class DeployTool {
     curl_setopt_array ($ch, $options);
     $data = curl_exec ($ch);
     curl_close ($ch);
-echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
-var_dump ($data);
-exit ();
+
     $obj->error = $data;
     $obj->save ();
     
