@@ -25,14 +25,6 @@ class Authors extends Admin_controller {
     $this->add_param ('uri_1', $this->uri_1)
          ->add_param ('now_url', base_url ($this->uri_1));
   }
-  public function show ($id) {
-    $this->load->library ('DeployTool');
-
-    if (!(DeployTool::genApi (true) && DeployTool::callBuild ()))
-      return redirect_message (array ($this->uri_1), array ('_flash_danger' => '預覽失敗！'));
-
-    return redirect_message (Cfg::setting ('deploy', 'view', ENVIRONMENT) . 'author/' . $this->obj->id . '-' . rawurlencode (preg_replace ('/[\/%]/u', ' ', $this->obj->title)) . '.html', array ('_flash_info' => ''));
-  }
   public function index ($offset = 0) {
     $columns = array ( 
         array ('key' => 'content', 'title' => '內容', 'sql' => 'content LIKE ?'), 
@@ -105,22 +97,22 @@ class Authors extends Admin_controller {
   }
 
   private function _validation_create (&$posts, &$cover) {
-    if (!isset ($posts['content'])) return '沒有填寫 文章內容！';
-    if (!isset ($cover)) return '沒有選擇 文章封面！';
+    if (!isset ($posts['content'])) return '沒有填寫 關於內容！';
+    if (!isset ($cover)) return '沒有選擇 關於封面！';
     
-    if (!(is_string ($posts['content']) && ($posts['content'] = trim ($posts['content'])))) return '文章內容 格式錯誤！';
-    if (!is_upload_image_format ($cover, 20 * 1024 * 1024, array ('gif', 'jpeg', 'jpg', 'png'))) return '文章封面 格式錯誤！';
+    if (!(is_string ($posts['content']) && ($posts['content'] = trim ($posts['content'])))) return '關於內容 格式錯誤！';
+    if (!is_upload_image_format ($cover, 20 * 1024 * 1024, array ('gif', 'jpeg', 'jpg', 'png'))) return '關於封面 格式錯誤！';
     
     $posts['cover'] = '';
     
     return '';
   }
   private function _validation_update (&$posts, &$cover, $obj) {
-    if (!isset ($posts['content'])) return '沒有填寫 文章內容！';
-    if (!((string)$obj->cover || isset ($cover))) return '沒有選擇 文章封面！';
+    if (!isset ($posts['content'])) return '沒有填寫 關於內容！';
+    if (!((string)$obj->cover || isset ($cover))) return '沒有選擇 關於封面！';
 
-    if (!(is_string ($posts['content']) && ($posts['content'] = trim ($posts['content'])))) return '文章內容 格式錯誤！';
-    if ($cover && !is_upload_image_format ($cover, 20 * 1024 * 1024, array ('gif', 'jpeg', 'jpg', 'png'))) return '文章封面 格式錯誤！';
+    if (!(is_string ($posts['content']) && ($posts['content'] = trim ($posts['content'])))) return '關於內容 格式錯誤！';
+    if ($cover && !is_upload_image_format ($cover, 20 * 1024 * 1024, array ('gif', 'jpeg', 'jpg', 'png'))) return '關於封面 格式錯誤！';
     
     return '';
   }

@@ -25,14 +25,6 @@ class Articles extends Admin_controller {
     $this->add_param ('uri_1', $this->uri_1)
          ->add_param ('now_url', base_url ($this->uri_1));
   }
-  public function show ($id) {
-    $this->load->library ('DeployTool');
-
-    if (!(DeployTool::genApi (true) && DeployTool::callBuild ()))
-      return redirect_message (array ($this->uri_1), array ('_flash_danger' => '預覽失敗！'));
-
-    return redirect_message (Cfg::setting ('deploy', 'view', ENVIRONMENT) . 'article/' . $this->obj->id . '-' . rawurlencode (preg_replace ('/[\/%]/u', ' ', $this->obj->title)) . '.html', array ('_flash_info' => ''));
-  }
   public function index ($offset = 0) {
     $columns = array ( 
         array ('key' => 'content', 'title' => '內容', 'sql' => 'content LIKE ?'), 

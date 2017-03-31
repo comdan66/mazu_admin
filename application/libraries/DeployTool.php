@@ -125,7 +125,7 @@ class DeployTool {
     write_file ($api . 'videos.json', json_encode (array_values ($youtubes)));
     @chmod ($api . 'videos.json', 0777);
   }
-  public static function api_homes ($api) {
+  public static function api_home ($api) {
     $home = Home::first (array ('select' => 'id, cover, content, pv, updated_at, created_at'));
     $home = array (
           'id' => $home->id,
@@ -143,7 +143,7 @@ class DeployTool {
     write_file ($api . 'home.json', json_encode ($home));
     @chmod ($api . 'home.json', 0777);
   }
-  public static function api_authors ($api) {
+  public static function api_author ($api) {
     $author = Author::first (array ('select' => 'id, cover, content, pv, updated_at, created_at'));
     $author = array (
           'id' => $author->id,
@@ -161,7 +161,7 @@ class DeployTool {
     write_file ($api . 'author.json', json_encode ($author));
     @chmod ($api . 'author.json', 0777);
   }
-  public static function api_licenses ($api) {
+  public static function api_license ($api) {
     $license = License::first (array ('select' => 'id, cover, content, pv, updated_at, created_at'));
     $license = array (
           'id' => $license->id,
@@ -190,9 +190,9 @@ class DeployTool {
     DeployTool::api_albums ($api);
     DeployTool::api_youtubes ($api);
 
-    DeployTool::api_homes ($api);
-    DeployTool::api_authors ($api);
-    DeployTool::api_licenses ($api);
+    DeployTool::api_home ($api);
+    DeployTool::api_author ($api);
+    DeployTool::api_license ($api);
 
     return true;
   }

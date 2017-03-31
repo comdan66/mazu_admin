@@ -51,7 +51,7 @@
           <th>內容</th>
           <th width='50'>PV</th>
           <th width='50' class='right'>排序</th>
-          <th width='120' class='right'>預覽/修改/刪除</th>
+          <th width='85' class='right'>修改/刪除</th>
         </tr>
       </thead>
       <tbody>
@@ -75,8 +75,6 @@
                 <a class='icon-td' href='<?php echo base_url ($uri_1, $obj->id, 'sort', 'down');?>' data-method='post'></a>
               </td>
               <td class='right'>
-                <a class='icon-y' href="<?php echo base_url ($uri_1, $obj->id, 'show');?>" target='_blank'></a>
-                /
                 <a class='icon-e' href="<?php echo base_url ($uri_1, $obj->id, 'edit');?>"></a>
                 /
                 <a class='icon-t' href="<?php echo base_url ($uri_1, $obj->id);?>" data-method='delete'></a>

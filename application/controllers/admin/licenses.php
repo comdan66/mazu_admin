@@ -105,22 +105,22 @@ class Licenses extends Admin_controller {
   }
 
   private function _validation_create (&$posts, &$cover) {
-    if (!isset ($posts['content'])) return '沒有填寫 文章內容！';
-    if (!isset ($cover)) return '沒有選擇 文章封面！';
+    if (!isset ($posts['content'])) return '沒有填寫 聲明內容！';
+    if (!isset ($cover)) return '沒有選擇 聲明封面！';
     
-    if (!(is_string ($posts['content']) && ($posts['content'] = trim ($posts['content'])))) return '文章內容 格式錯誤！';
-    if (!is_upload_image_format ($cover, 20 * 1024 * 1024, array ('gif', 'jpeg', 'jpg', 'png'))) return '文章封面 格式錯誤！';
+    if (!(is_string ($posts['content']) && ($posts['content'] = trim ($posts['content'])))) return '聲明內容 格式錯誤！';
+    if (!is_upload_image_format ($cover, 20 * 1024 * 1024, array ('gif', 'jpeg', 'jpg', 'png'))) return '聲明封面 格式錯誤！';
     
     $posts['cover'] = '';
     
     return '';
   }
   private function _validation_update (&$posts, &$cover, $obj) {
-    if (!isset ($posts['content'])) return '沒有填寫 文章內容！';
-    if (!((string)$obj->cover || isset ($cover))) return '沒有選擇 文章封面！';
+    if (!isset ($posts['content'])) return '沒有填寫 聲明內容！';
+    if (!((string)$obj->cover || isset ($cover))) return '沒有選擇 聲明封面！';
 
-    if (!(is_string ($posts['content']) && ($posts['content'] = trim ($posts['content'])))) return '文章內容 格式錯誤！';
-    if ($cover && !is_upload_image_format ($cover, 20 * 1024 * 1024, array ('gif', 'jpeg', 'jpg', 'png'))) return '文章封面 格式錯誤！';
+    if (!(is_string ($posts['content']) && ($posts['content'] = trim ($posts['content'])))) return '聲明內容 格式錯誤！';
+    if ($cover && !is_upload_image_format ($cover, 20 * 1024 * 1024, array ('gif', 'jpeg', 'jpg', 'png'))) return '聲明封面 格式錯誤！';
     
     return '';
   }
