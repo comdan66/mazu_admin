@@ -1,6 +1,6 @@
 /**
  * @author      OA Wu <comdan66@gmail.com>
- * @copyright   Copyright (c) 2016 OA Wu Design
+ * @copyright   Copyright (c) 2017 OA Wu Design
  *
  * jquery_v1.11.3、jquery-rails_d2015_03_09、imgLiquid_v0.9.944、jquery-timeago_v1.3.1、photoswipe_v4.1.0
  */
