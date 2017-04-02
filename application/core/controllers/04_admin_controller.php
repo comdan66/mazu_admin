@@ -20,7 +20,7 @@ class Admin_controller extends Oa_controller {
          ->set_content_path ('content', 'admin')
          ->set_public_path ('public')
 
-         ->set_title ("宙思管理後台")
+         ->set_title ("北港迎媽祖管理後台")
 
          ->_add_meta ()
          ->_add_css ()
