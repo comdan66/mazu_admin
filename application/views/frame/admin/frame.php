@@ -18,8 +18,8 @@
         <div id='left_side'>
           
           <header>
-            <a href='<?php echo base_url ();?>'>Ｚ</a>
-            <span>Zeus Design Studio!</span>
+            <a href='<?php echo base_url ();?>'>笨</a>
+            <span>北港迎媽祖!</span>
           </header>
 
           <div id='login_user'>
