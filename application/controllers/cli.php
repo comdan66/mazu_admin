@@ -22,23 +22,9 @@ class Cli extends Oa_controller {
   }
   
   public function test () {
-    // $a = Article::last ();
-    // echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
-    // var_dump ($a->pics ());
-    // exit ();
-    $this->load->helper ('directory_helper');
-    $this->load->library ('DeployTool');
-
-    $api = FCPATH . 'api' . DIRECTORY_SEPARATOR;
-    @directory_delete ($api, false);
-
-    DeployTool::api_article ($api);
-    DeployTool::api_paths ($api);
-    DeployTool::api_albums ($api);
-    DeployTool::api_youtubes ($api);
-    DeployTool::api_homes ($api);
-    DeployTool::api_authors ($api);
-    DeployTool::api_licenses ($api);
+    // Point
+    $this->load->library ('PointGeter');
+    PointGeter::getByGodRoad (GpsPoint::ACTIVE_1);
   }
   
   public function ga () {

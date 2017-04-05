@@ -2,15 +2,16 @@
 
 /**
  * @author      OA Wu <comdan66@gmail.com>
- * @copyright   Copyright (c) 2017 OA Wu Design
+ * @copyright   Copyright (c) 2016 OA Wu Design
  */
 
-class Migration_Add_onlines extends CI_Migration {
+class Migration_Add_tasks extends CI_Migration {
   public function up () {
     $this->db->query (
-      "CREATE TABLE `onlines` (
+      "CREATE TABLE `tasks` (
         `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-        `cnt` int(11) unsigned NOT NULL COMMENT 'count',
+        `title` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '標題',
+        `msg` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '訊息，有訊息則代表錯誤',
         `updated_at` datetime NOT NULL DEFAULT '" . date ('Y-m-d H:i:s') . "' COMMENT '更新時間',
         `created_at` datetime NOT NULL DEFAULT '" . date ('Y-m-d H:i:s') . "' COMMENT '新增時間',
         PRIMARY KEY (`id`)
@@ -19,7 +20,7 @@ class Migration_Add_onlines extends CI_Migration {
   }
   public function down () {
     $this->db->query (
-      "DROP TABLE `onlines`;"
+      "DROP TABLE `tasks`;"
     );
   }
 }

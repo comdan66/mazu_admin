@@ -24,21 +24,19 @@ class Online extends OaModel {
   }
   public static function get () {
     $time = 'ga' . '_' . time ();
-    // if (!Task::start ('get/' . 'ga', $time)) 
-      // return Task::error ('初始化失敗', $time);
+    if (!Task::start ('get/' . 'ga', $time)) 
+      return Task::error ('初始化失敗', $time);
 
     $error = '';
     $count = self::ga ($error);
-    // if ($error) return Task::error ($error, $time);
+    if ($error) return Task::error ($error, $time);
 
-    $params = array (
-        'cnt' => $count,
-      );
+    $params = array ('cnt' => $count);
 
     if (!Online::transaction (function () use ($params, &$point) { return verifyCreateOrm ($point = Online::create (array_intersect_key ($params, Online::table ()->columns))); }))
-      ;// return Task::error ('新增資料庫失敗', $time);
+      return Task::error ('新增資料庫失敗', $time);
 
-    // return Task::finish ($time);
+    return Task::finish ($time);
   }
   private static function ga (&$msg) {
     $online = 0;
