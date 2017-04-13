@@ -26,7 +26,7 @@ class Callback extends Api_controller {
     
   }
   public function test () {
-    preg_match_all ("/js 版本\s*(?P<c>\d+)?/", 'js 版本 10', $result);
+    preg_match_all ("/目前路線\s*(?P<c>\d+)?/i", '目前路線 10', $result);
     echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
     var_dump ($result['c']['0']);
     exit ();
@@ -118,7 +118,7 @@ class Callback extends Api_controller {
             }
             $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('已經設定 ' . $result['c'][0] . ''));
           }
-          preg_match_all ("/js 版本\s*(?P<c>\d+)?/", $line->text, $result);
+          preg_match_all ("/js 版本\s*(?P<c>\d+)?/i", $line->text, $result);
           if (isset ($result['c'][0]) && is_numeric ($result['c'][0])) {
             if ($s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'jsv')))) {
               $s->v = $result['c'][0];
@@ -127,6 +127,17 @@ class Callback extends Api_controller {
               GpsSetting::create (array ('k' => 'jsv', 'v' => $result['c'][0]));
             }
             $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('js 版本目前是 ' . $result['c'][0] . ''));
+          }
+
+          preg_match_all ("/設定目前路線\s*(?P<c>\d+)?/i", $line->text, $result);
+          if (isset ($result['c'][0]) && is_numeric ($result['c'][0]) && in_array ($result['c'][0], array_keys (Path::$typeNames))) {
+            if ($s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'now')))) {
+              $s->v = $result['c'][0];
+              $s->save ();
+            } else {
+              GpsSetting::create (array ('k' => 'now', 'v' => $result['c'][0]));
+            }
+            $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('目前路線 ' . $result['c'][0] . ''));
           }
           echo 'Succeeded!';
           break;
