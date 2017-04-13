@@ -26,7 +26,11 @@ class Callback extends Api_controller {
     
   }
   public function test () {
-    Line::pushMessage ('asd');
+    preg_match_all ("/設定開啟\s*(?P<c>[0-9,\s]+)?/", '設定開啟', $result);
+    echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
+    var_dump ($result['c']['0']);
+    exit ();
+    // Line::pushMessage ('asd');
     // echo $response->getHTTPStatus () . ' ' . $response->getRawBody ();
   }
   public function index () {
@@ -101,6 +105,18 @@ class Callback extends Api_controller {
               GpsSetting::create (array ('k' => 'gps', 'v' => '0'));
             }
             $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('已經關閉！'));
+          }
+
+
+          preg_match_all ("/設定開啟\s*(?P<c>[0-9,\s]+)?/", '設定開啟 1,2', $result);
+          if (isset ($result['c'][0]) && ($result['c'][0] = implode(', ', array_filter (preg_split ("/[\s,]+/", $result['c']['0']))))) {
+            if ($s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'ons')))) {
+              $s->v = $result['c'][0];
+              $s->save ();
+            } else {
+              GpsSetting::create (array ('k' => 'ons', 'v' => $result['c'][0]));
+            }
+            $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('已經設定 ' . $result['c'][0] . '！'));
           }
           echo 'Succeeded!';
           break;

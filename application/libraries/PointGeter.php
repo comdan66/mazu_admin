@@ -171,7 +171,12 @@ class PointGeter {
       return Task::error ('上次檔案未刪除', $time);
     }
 
-    $enableActives = array (1, 2);
+    $s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'ons')));
+    if ($s && $s->v) {
+      $enableActives = array_filter (preg_split ("/[\s,]+/", $s->v));
+    } else {
+      $enableActives = array ();
+    }
 
     $points_list = array_map (function ($active) {
       return array (
