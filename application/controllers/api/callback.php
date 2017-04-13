@@ -17,7 +17,6 @@ use LINE\LINEBot\Event\MessageEvent\StickerMessage;
 use LINE\LINEBot\Event\MessageEvent\LocationMessage;
 use LINE\LINEBot\Event\MessageEvent\ImageMessage;
 use LINE\LINEBot\Event\MessageEvent\AudioMessage;
-use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 
 class Callback extends Api_controller {
 
@@ -26,16 +25,7 @@ class Callback extends Api_controller {
     
   }
   public function test () {
-    $user_id = Cfg::setting ('line', 'user_id');
-    $channel_secret = Cfg::setting ('line', 'channel', 'secret');
-    $token = Cfg::setting ('line', 'channel', 'token');
-
-    $httpClient = new CurlHTTPClient ($token);
-    $bot = new LINEBot ($httpClient, ['channelSecret' => $channel_secret]);
-
-    $textMessageBuilder = new TextMessageBuilder ('hello');
-    $response = $bot->pushMessage ($user_id, $textMessageBuilder);
-
+    Line::pushMessage ('asd');
     // echo $response->getHTTPStatus () . ' ' . $response->getRawBody ();
   }
   public function index () {
