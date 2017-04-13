@@ -92,7 +92,7 @@ class Callback extends Api_controller {
 
       switch ($line->instanceof) {
         case 'TextMessage':
-          if (($line->text == '開啟 GPS') || ($line->text == '開啟 gps')) {
+          if (($line->text == 'gps 開啟') || ($line->text == 'GPS 開啟') || ($line->text == '開啟 GPS') || ($line->text == '開啟 gps')) {
             if ($s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'gps')))) {
               $s->v = '1';
               $s->save ();
@@ -101,7 +101,7 @@ class Callback extends Api_controller {
             }
             $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('已經開啟！'));
           }
-          if (($line->text == '關閉 GPS') || ($line->text == '關閉 gps')) {
+          if (($line->text == 'gps 關閉') || ($line->text == 'GPS 關閉') || ($line->text == '關閉 GPS') || ($line->text == '關閉 gps')) {
             if ($s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'gps')))) {
               $s->v = '0';
               $s->save ();
