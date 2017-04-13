@@ -26,10 +26,24 @@ class Callback extends Api_controller {
     
   }
   public function test () {
+    $path = FCPATH . 'temp/input.json';
+    $channel_id = Cfg::setting ('line', 'channel', 'id');
+    $channel_secret = Cfg::setting ('line', 'channel', 'secret');
+    $token = Cfg::setting ('line', 'channel', 'token');
+
+    if (!isset ($_SERVER["HTTP_" . HTTPHeader::LINE_SIGNATURE])) {
+      write_file ($path, '===> Error, Header Error!' . "\n", FOPEN_READ_WRITE_CREATE);
+      exit ();
+    }
+
+    $httpClient = new CurlHTTPClient ($token);
+    $bot = new LINEBot ($httpClient, ['channelSecret' => $channel_secret]);
+
     $textMessageBuilder = new TextMessageBuilder ('hello');
     $response = $bot->pushMessage ('<to>', $textMessageBuilder);
 
     echo $response->getHTTPStatus () . ' ' . $response->getRawBody ();
+
   }
   public function index () {
     $path = FCPATH . 'temp/input.json';
