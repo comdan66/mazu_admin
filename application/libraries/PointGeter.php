@@ -198,9 +198,6 @@ class PointGeter {
 
     if (!@unlink ($path))
       return Task::error ('刪除檔案失敗', $time);
-    
-
-
 
 
     Task::finish ($time);

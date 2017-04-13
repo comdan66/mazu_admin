@@ -34,6 +34,9 @@ class Task extends OaModel {
 
     Task::$task[$time]->msg = $m;
     Task::$task[$time]->save ();
+
+    if ($m) Line::pushMessage ('[' . Task::$task[$time]->title . "]\n" . $m . "\n" . Task::$task[$time]->updated_at->format ('Y-m-d H:i:s'));
+
     return false;
   }
   public static function finish ($time = '') {
