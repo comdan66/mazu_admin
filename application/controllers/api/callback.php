@@ -78,29 +78,29 @@ class Callback extends Api_controller {
           'sticker_id' => '',
           'text' => $instanceof == 'TextMessage' ? $event->getText () : '',
         );
-      if (!Line::transaction (function () use (&$log, $params) { return verifyCreateOrm ($log = Line::create ( array_intersect_key ($params, Line::table ()->columns))); })) return false;
+      if (!Line::transaction (function () use (&$line, $params) { return verifyCreateOrm ($line = Line::create ( array_intersect_key ($params, Line::table ()->columns))); })) return false;
 
       if ($event->getType () != 'message') continue;
 
-      switch ($log->instanceof) {
+      switch ($line->instanceof) {
         case 'TextMessage':
-          if (($log->text == '開啟 GPS') || ($log->text == '開啟 gps')) {
+          if (($line->text == '開啟 GPS') || ($line->text == '開啟 gps')) {
             if ($s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'gps')))) {
               $s->v = '1';
               $s->save ();
             } else {
               GpsSetting::create (array ('k' => 'gps', 'v' => '1'));
             }
-            $bot->replyMessage ($bot->reply_token, new TextMessageBuilder ('已經開啟！'));
+            $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('已經開啟！'));
           }
-          if (($log->text == '關閉 GPS') || ($log->text == '關閉 gps')) {
+          if (($line->text == '關閉 GPS') || ($line->text == '關閉 gps')) {
             if ($s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'gps')))) {
               $s->v = '0';
               $s->save ();
             } else {
               GpsSetting::create (array ('k' => 'gps', 'v' => '0'));
             }
-            $bot->replyMessage ($bot->reply_token, new TextMessageBuilder ('已經關閉！'));
+            $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('已經關閉！'));
           }
           echo 'Succeeded!';
           break;
