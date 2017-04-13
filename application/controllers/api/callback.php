@@ -30,7 +30,7 @@ class Callback extends Api_controller {
     // echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
     // var_dump ($result['c']['0']);
     // exit ();
-    
+
             $this->load->helper ('directory');
             directory_delete (FCPATH . 'temp', false);
 
@@ -143,12 +143,28 @@ class Callback extends Api_controller {
             }
             $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('目前路線 ' . $result['c'][0] . ''));
           }
+
           preg_match_all ("/(?P<c>清除\s*tmp)/i", $line->text, $result);
           if (isset ($result['c'][0]) && $result['c'][0]) {
             $this->load->helper ('directory');
             directory_delete (FCPATH . 'temp', false);
 
             $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('已經清除 TMP 資料夾！'));
+          }
+
+          if (($line->text == '回報狀態') || ($line->text == '回報')) {
+            $gps = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'gps')));
+            $ons = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'ons')));
+            $jsv = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'jsv')));
+            $now = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'now')));
+
+            $bot->replyMessage ($line->reply_token, new TextMessageBuilder (
+              "目前狀態\n" .
+              'GPS 排程：' . ($gps && $gps->v == '1' ? '開啟' : '關閉') . "\n" .
+              '開啟路線：' . ($ons && $ons->v ? $ons->v : '沒有設定') . "\n" .
+              'JS 版本：' . ($jsv && $jsv->v ? $jsv->v : 0) . "\n" .
+              '目前路關：' . ($now && $now->v ? $now->v : 0)
+              ));
           }
 
           echo 'Succeeded!';
