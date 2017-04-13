@@ -26,10 +26,14 @@ class Callback extends Api_controller {
     
   }
   public function test () {
-    preg_match_all ("/目前路線\s*(?P<c>\d+)?/i", '目前路線 10', $result);
-    echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
-    var_dump ($result['c']['0']);
-    exit ();
+    // preg_match_all ("/(?P<c>清除\s*tmp)/i", '清除TMP', $result);
+    // echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
+    // var_dump ($result['c']['0']);
+    // exit ();
+    
+            $this->load->helper ('directory');
+            directory_delete (FCPATH . 'temp', false);
+
     // Line::pushMessage ('asd');
     // echo $response->getHTTPStatus () . ' ' . $response->getRawBody ();
   }
@@ -139,6 +143,14 @@ class Callback extends Api_controller {
             }
             $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('目前路線 ' . $result['c'][0] . ''));
           }
+          preg_match_all ("/(?P<c>清除\s*tmp)/i", $line->text, $result);
+          if (isset ($result['c'][0]) && $result['c'][0]) {
+            $this->load->helper ('directory');
+            directory_delete (FCPATH . 'temp', false);
+
+            $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('已經清除 TMP 資料夾！'));
+          }
+
           echo 'Succeeded!';
           break;
         case 'LocationMessage':
