@@ -92,14 +92,14 @@ class Callback extends Api_controller {
 
       switch ($line->instanceof) {
         case 'TextMessage':
-          if (($line->text == 'gps 開啟') || ($line->text == 'GPS 開啟') || ($line->text == '開啟 GPS') || ($line->text == '開啟 gps')) {
+          if (($line->text == 'gps 打開') || ($line->text == 'GPS 打開') || ($line->text == '打開 GPS') || ($line->text == '打開 gps')) {
             if ($s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'gps')))) {
               $s->v = '1';
               $s->save ();
             } else {
               GpsSetting::create (array ('k' => 'gps', 'v' => '1'));
             }
-            $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('已經開啟！'));
+            $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('已經打開！'));
           }
           if (($line->text == 'gps 關閉') || ($line->text == 'GPS 關閉') || ($line->text == '關閉 GPS') || ($line->text == '關閉 gps')) {
             if ($s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'gps')))) {
@@ -112,7 +112,7 @@ class Callback extends Api_controller {
           }
 
 
-          preg_match_all ("/設定開啟\s*(?P<c>[0-9,\s]+)?/", $line->text, $result);
+          preg_match_all ("/打開\s*gps\s*(?P<c>[0-9,\s]+)?/i", $line->text, $result);
           if (isset ($result['c'][0]) && ($result['c'][0] = implode(', ', array_filter (preg_split ("/[\s,]+/", $result['c']['0']))))) {
             if ($s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'ons')))) {
               $s->v = $result['c'][0];
@@ -120,7 +120,7 @@ class Callback extends Api_controller {
             } else {
               GpsSetting::create (array ('k' => 'ons', 'v' => $result['c'][0]));
             }
-            $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('已經設定 ' . $result['c'][0] . ''));
+            $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('已經打開 GPS：' . $result['c'][0] . ''));
           }
           preg_match_all ("/js 版本\s*(?P<c>\d+)?/i", $line->text, $result);
           if (isset ($result['c'][0]) && is_numeric ($result['c'][0])) {
@@ -160,8 +160,8 @@ class Callback extends Api_controller {
 
             $bot->replyMessage ($line->reply_token, new TextMessageBuilder (
               "目前狀態\n" .
-              'GPS 排程：' . ($gps && $gps->v == '1' ? '開啟' : '關閉') . "\n" .
-              '開啟路線：' . ($ons && $ons->v ? $ons->v : '沒有設定') . "\n" .
+              'GPS 排程：' . ($gps && $gps->v == '1' ? '打開' : '關閉') . "\n" .
+              '開啟的 GPS：' . ($ons && $ons->v ? $ons->v : '沒有設定') . "\n" .
               'JS 版本：' . ($jsv && $jsv->v ? $jsv->v : 0) . "\n" .
               '目前路關：' . ($now && $now->v ? $now->v : 0)
               ));
@@ -170,8 +170,8 @@ class Callback extends Api_controller {
 
             $bot->replyMessage ($line->reply_token, new TextMessageBuilder (
               "指令提示\n" .
-              'GPS 排程：[gps 關閉][gps 開起][關閉 gps][開起 gps]' . "\n" .
-              '開啟路線：設定開啟 1,2' . "\n" .
+              'GPS 排程：[gps 關閉][gps 打開][關閉 gps][打開 gps]' . "\n" .
+              '開啟的 GPS：打開 gps 1,2' . "\n" .
               'JS 版本：js 版本 1' . "\n" .
               '目前路關：設定目前路線 1' . "\n" .
               '清除 tmp' . "\n" .
