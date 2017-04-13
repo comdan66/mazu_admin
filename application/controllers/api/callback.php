@@ -26,7 +26,7 @@ class Callback extends Api_controller {
     
   }
   public function test () {
-    $user_id = Cfg::setting ('line', 'channel', 'user_id');
+    $user_id = Cfg::setting ('line', 'user_id');
     $channel_secret = Cfg::setting ('line', 'channel', 'secret');
     $token = Cfg::setting ('line', 'channel', 'token');
 
