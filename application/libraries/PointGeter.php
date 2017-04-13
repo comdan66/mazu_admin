@@ -178,19 +178,18 @@ class PointGeter {
       $enableActives = array ();
     }
 
-    $points_list = array_values (array_map (function ($active) {
-      return array (
+    $points_list = array_values (array_filter (array_map (function ($active) {
+      return isset (GpsPoint::$activeNames) && isset (GpsPoint::$activeIconUrl) ? array (
         GpsPoint::$activeNames[$active],
         GpsPoint::$activeIconUrl[$active],
-
         array_2d_to_1d (array_map (function ($point) {
           return array (
               round (($point->lat2 ? $point->lat2 : $point->lat) - 23, 6) * pow (10, 6),
               round (($point->lng2 ? $point->lng2 : $point->lng) - 120, 6) * pow (10, 6),
               strtotime ($point->time_at->format ('Y-m-d H:i:s'))
             );
-        }, GpsPoint::find ('all', array ('order' => 'id desc', 'limit' => 30, 'conditions' => array ('active = ? AND enable = ?', $active, PointGeter::IS_ENABLED))))));
-    }, $enableActives));
+        }, GpsPoint::find ('all', array ('order' => 'id desc', 'limit' => 30, 'conditions' => array ('active = ? AND enable = ?', $active, PointGeter::IS_ENABLED)))))) : array ();
+    }, $enableActives)));
 
     $s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'jsv')));
     $j = $s && $s->v ? $s->v : 0;

@@ -166,6 +166,19 @@ class Callback extends Api_controller {
               '目前路關：' . ($now && $now->v ? $now->v : 0)
               ));
           }
+          if (($line->text == '提示') || ($line->text == '?')) {
+
+            $bot->replyMessage ($line->reply_token, new TextMessageBuilder (
+              "指令提示\n" .
+              'GPS 排程：[gps 關閉][gps 開起][關閉 gps][開起 gps]' . "\n" .
+              '開啟路線：設定開啟 1,2' . "\n" .
+              'JS 版本：js 版本 1' . "\n" .
+              '目前路關：設定目前路線 1' . "\n" .
+              '清除 tmp' . "\n" .
+              '回報' . "\n" .
+              '提示'
+              ));
+          }
 
           echo 'Succeeded!';
           break;
