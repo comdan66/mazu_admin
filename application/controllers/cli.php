@@ -22,11 +22,14 @@ class Cli extends Oa_controller {
   }
   
   public function test () {
-    // Point
-    $this->load->library ('PointGeter');
-    PointGeter::getByGodRoad (GpsPoint::ACTIVE_1);
-    PointGeter::getByGodRoad (GpsPoint::ACTIVE_2);
-    PointGeter::up ();
+    $s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'gps')));
+
+    if ($s && $s->v == '1') {
+      $this->load->library ('PointGeter');
+      PointGeter::getByGodRoad (GpsPoint::ACTIVE_1);
+      PointGeter::getByGodRoad (GpsPoint::ACTIVE_2);
+      PointGeter::up ();
+    }
   }
   
   public function ga () {

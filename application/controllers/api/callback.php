@@ -83,6 +83,24 @@ class Callback extends Api_controller {
 
       switch ($log->instanceof) {
         case 'TextMessage':
+          if (($log->text == '開啟 GPS') || ($log->text == '開啟 gps')) {
+            if ($s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'gps')))) {
+              $s->v = '1';
+              $s->save ();
+            } else {
+              GpsSetting::create (array ('k' => 'gps', 'v' => '1'));
+            }
+            $bot->replyMessage ($bot->reply_token, new TextMessageBuilder ('已經開啟！'));
+          }
+          if (($log->text == '關閉 GPS') || ($log->text == '關閉 gps')) {
+            if ($s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'gps')))) {
+              $s->v = '0';
+              $s->save ();
+            } else {
+              GpsSetting::create (array ('k' => 'gps', 'v' => '0'));
+            }
+            $bot->replyMessage ($bot->reply_token, new TextMessageBuilder ('已經關閉！'));
+          }
           echo 'Succeeded!';
           break;
         case 'LocationMessage':
