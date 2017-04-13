@@ -43,7 +43,7 @@ class PointGeter {
     return (2 * asin (sqrt (pow (sin (($aa - $cc) / 2), 2) + cos ($aa) * cos ($cc) * pow (sin(($bb - $dd) / 2), 2)))) * 6378137;
   }
   private static function isInRange ($a, $n) {
-    return is_numeric ($a) && is_numeric ($n) && $a >= 23.3 && $a <= 24.7 && $n >= 120 && $n <= 121;
+    return is_numeric ($a) && is_numeric ($n) && $a >= 22 && $a <= 24 && $n >= 120 && $n <= 121;
   }
 
   private static function pointIgps ($code) {
@@ -90,7 +90,7 @@ class PointGeter {
     if ($error) return $error;
     if (!$data) return '取得位置失敗！';
     if (!isJson ($data)) return '格式錯誤！';
-    
+
     $data = json_decode ($data, true);
 
     if (!(isset ($data['state']) && is_string ($data['state']) && ($data['state'] == 'ok') && isset ($data['gps']) && is_array ($data['gps']) && $data['gps'] && isset ($data['gps'][0]['lat']) && isset ($data['gps'][0]['lng']) && self::isInRange ($data['gps'][0]['lat'], $data['gps'][0]['lng']) && isset ($data['gps'][0]['rectime']) && $data['gps'][0]['rectime'] && ($date = DateTime::createFromFormat ('Y/m/d H:i:s', $data['gps'][0]['rectime'])) !== false))
@@ -158,5 +158,80 @@ class PointGeter {
       return Task::error ('新增資料庫失敗', $time);
 
     return Task::finish ($time) && $point ? $point : false;
+  }
+  public static function up () {
+    $time = 'point_up' . '_' . time ();
+    if (!Task::start ('up/active', $time)) 
+      return Task::error ('初始化失敗', $time);
+    
+    $path = FCPATH . 'temp/p.json';
+    $s3_path = ENVIRONMENT === 'production' ? 'api/p.json' : 'api/dev/p.json';
+
+    if (file_exists ($path)) {
+      return Task::error ('上次檔案未刪除', $time);
+    }
+
+    $enableActives = array (1, 2);
+
+    $points_list = array_map (function ($active) {
+      return array (
+        GpsPoint::$activeNames[$active],
+        GpsPoint::$activeIconUrl[$active],
+
+        array_2d_to_1d (array_map (function ($point) {
+          return array (
+              round (($point->lat2 ? $point->lat2 : $point->lat) - 23, 6) * pow (10, 6),
+              round (($point->lng2 ? $point->lng2 : $point->lng) - 120, 6) * pow (10, 6),
+              strtotime ($point->time_at->format ('Y-m-d H:i:s'))
+            );
+        }, GpsPoint::find ('all', array ('order' => 'id desc', 'limit' => 30, 'conditions' => array ('active = ? AND enable = ?', $active, PointGeter::IS_ENABLED))))));
+    }, $enableActives);
+
+    if (!write_file ($path, json_encode (array_merge (array (
+        1, // v
+        2, // n
+      ), $points_list))))
+      return Task::error ('寫入檔案失敗', $time);
+
+    if (!put_s3 ($path, $s3_path))
+      return Task::error ('上傳 S3 失敗', $time);
+
+    if (!@unlink ($path))
+      return Task::error ('刪除檔案失敗', $time);
+    
+
+
+
+
+    Task::finish ($time);
+
+    $time = 'point_up' . '_' . time ();
+
+    if (!Task::start ('up/api', $time)) 
+      return Task::error ('初始化失敗', $time);
+
+    $path = FCPATH . 'temp/api.json';
+    $s3_path = ENVIRONMENT === 'production' ? 'api/api.json' : 'api/dev/api.json';
+
+    $points_list = array_map (function ($t) {
+      return array (
+          'name' => $t[0],
+          'position' => $t[2] ? array (
+              $t[2][0] / pow (10, 6) + 23, $t[2][1] / pow (10, 6) + 120
+            ) : array ()
+        );
+    }, $points_list);
+
+
+    if (!write_file ($path, json_encode ($points_list, JSON_UNESCAPED_UNICODE)))
+      return Task::error ('寫入檔案失敗', $time);
+
+    if (!put_s3 ($path, $s3_path))
+      return Task::error ('上傳 S3 失敗', $time);
+
+    if (!@unlink ($path))
+      return Task::error ('刪除檔案失敗', $time);
+
+    Task::finish ($time);
   }
 }

@@ -24,12 +24,16 @@ class GpsPoint extends OaModel {
   const ACTIVE_2 = 2;
 
   static $activeNames = array (
-    self::ACTIVE_1 => '二媽',
-    self::ACTIVE_2 => '太子爺',
+    self::ACTIVE_1 => '二媽 金順安',
+    self::ACTIVE_2 => '莊儀團',
   );
   static $activeGodRoadCodes = array (
     self::ACTIVE_1 => '608069',
     self::ACTIVE_2 => '608369',
+  );
+  static $activeIconUrl = array (
+    self::ACTIVE_1 => 'https://pic.mazu.ioa.tw/icons/1.png',
+    self::ACTIVE_2 => 'https://pic.mazu.ioa.tw/icons/2.png',
   );
 
   public function __construct ($attributes = array (), $guard_attributes = true, $instantiating_via_find = false, $new_record = true) {

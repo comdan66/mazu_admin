@@ -25,9 +25,15 @@ class Cli extends Oa_controller {
     // Point
     $this->load->library ('PointGeter');
     PointGeter::getByGodRoad (GpsPoint::ACTIVE_1);
+    PointGeter::getByGodRoad (GpsPoint::ACTIVE_2);
+    PointGeter::up ();
   }
   
   public function ga () {
     Online::get ();
+  }
+  public function up () {
+    $this->load->library ('PointGeter');
+    PointGeter::up ();
   }
 }

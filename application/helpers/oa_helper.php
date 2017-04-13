@@ -6,6 +6,17 @@
  * @link        http://www.ioa.tw/
  */
 
+if (!function_exists ('put_s3')) {
+  function put_s3 ($path, $s3_path) {
+    $mime = ($mime = get_mime_by_extension ($path)) ? $mime : 'text/plain';
+
+    $bucket = Cfg::system ('orm_uploader', 'uploader', 's3', 'bucket');
+    
+    $CI =& get_instance ();
+    $CI->load->library ('S3', Cfg::system ('s3', 'buckets', $bucket));
+    return S3::putObjectFile ($path, $bucket, $s3_path, S3::ACL_PUBLIC_READ, array (), array ('Content-Type' => $mime));
+  }
+}
 if (!function_exists ('isJson')) {
   function isJson ($str) {
    json_decode ($str);
