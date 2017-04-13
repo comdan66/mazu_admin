@@ -192,9 +192,15 @@ class PointGeter {
         }, GpsPoint::find ('all', array ('order' => 'id desc', 'limit' => 30, 'conditions' => array ('active = ? AND enable = ?', $active, PointGeter::IS_ENABLED))))));
     }, $enableActives));
 
+    $s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'jsv')));
+    $j = $s && $s->v ? $s->v : 0;
+
+    $s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'now')));
+    $n = $s && $s->v ? $s->v : 0;
+
     if (!write_file ($path, json_encode (array_merge (array (
-        1, // v
-        2, // n
+        $j, // v
+        $n, // n
       ), $points_list))))
       return Task::error ('寫入檔案失敗', $time);
 
@@ -225,7 +231,7 @@ class PointGeter {
     }, $points_list);
 
 
-    if (!write_file ($path, json_encode ($points_list, JSON_UNESCAPED_UNICODE)))
+    if (!write_file ($path, json_encode ($points_list)))
       return Task::error ('寫入檔案失敗', $time);
 
     if (!put_s3 ($path, $s3_path))
