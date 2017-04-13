@@ -18,6 +18,7 @@ use LINE\LINEBot\Event\MessageEvent\LocationMessage;
 use LINE\LINEBot\Event\MessageEvent\ImageMessage;
 use LINE\LINEBot\Event\MessageEvent\AudioMessage;
 
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 class Callback extends Api_controller {
 
   public function __construct () {
