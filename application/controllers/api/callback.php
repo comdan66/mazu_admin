@@ -51,35 +51,6 @@ class Callback extends Api_controller {
       " -> 時間：" . $date->format ('Y-m-d H:i:s'),
       );
   }
-  public function test () {
-    // $s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'ons')));
-    // if ($s && $s->v) {
-    //   $enableActives = array_filter (preg_split ("/[\s,]+/", $s->v));
-    // } else {
-    //   $enableActives = array ();
-    // }
-    // $that = $this;
-    // $data = array_values (array_filter (array_map (function ($active) use ($that) {
-    //   if (!(isset (GpsPoint::$activeNames[$active]) && isset (GpsPoint::$activeGodRoadCodes[$active]))) return null;
-    //   $power = $that->power (GpsPoint::$activeGodRoadCodes[$active]);
-
-    //   return GpsPoint::$activeNames[$active] . ":\n" . (is_array ($power) ? implode ("\n", $power) : $power);
-    // }, $enableActives)));
-
-    //         echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
-    //         var_dump (implode("\n\n", $data));
-    //         exit ();
-    // preg_match_all ("/(?P<c>清除\s*tmp)/i", '清除TMP', $result);
-    // echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
-    // var_dump ($result['c']['0']);
-    // exit ();
-
-            // $this->load->helper ('directory');
-            // directory_delete (FCPATH . 'temp', false);
-
-    // Line::pushMessage ('asd');
-    // echo $response->getHTTPStatus () . ' ' . $response->getRawBody ();
-  }
   public function index () {
     $path = FCPATH . 'temp/input.json';
     $channel_id = Cfg::setting ('line', 'channel', 'id');
@@ -240,6 +211,7 @@ class Callback extends Api_controller {
               '目前路關：設定目前路線 1' . "\n" .
               '清除 tmp' . "\n" .
               '回報' . "\n" .
+              '電力' . "\n" .
               '提示'
               ));
           }
