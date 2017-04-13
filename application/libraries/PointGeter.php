@@ -38,11 +38,11 @@ class PointGeter {
     self::$ci =& get_instance ();
     return self::$ci;
   }
-  private static function length ($aa, $an, $ba, $bn) {
+  public static function length ($aa, $an, $ba, $bn) {
     $aa = deg2rad ($aa); $bb = deg2rad ($an); $cc = deg2rad ($ba); $dd = deg2rad ($bn);
     return (2 * asin (sqrt (pow (sin (($aa - $cc) / 2), 2) + cos ($aa) * cos ($cc) * pow (sin(($bb - $dd) / 2), 2)))) * 6378137;
   }
-  private static function isInRange ($a, $n) {
+  public static function isInRange ($a, $n) {
     return is_numeric ($a) && is_numeric ($n) && $a >= 22 && $a <= 24 && $n >= 120 && $n <= 121;
   }
 
@@ -179,7 +179,7 @@ class PointGeter {
     }
 
     $points_list = array_values (array_filter (array_map (function ($active) {
-      return isset (GpsPoint::$activeNames) && isset (GpsPoint::$activeIconUrl) ? array (
+      return isset (GpsPoint::$activeNames[$active]) && isset (GpsPoint::$activeIconUrl[$active]) ? array (
         GpsPoint::$activeNames[$active],
         GpsPoint::$activeIconUrl[$active],
         array_2d_to_1d (array_map (function ($point) {
