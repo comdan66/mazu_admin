@@ -178,7 +178,7 @@ class PointGeter {
       $enableActives = array ();
     }
 
-    $points_list = array_map (function ($active) {
+    $points_list = array_values (array_map (function ($active) {
       return array (
         GpsPoint::$activeNames[$active],
         GpsPoint::$activeIconUrl[$active],
@@ -190,7 +190,7 @@ class PointGeter {
               strtotime ($point->time_at->format ('Y-m-d H:i:s'))
             );
         }, GpsPoint::find ('all', array ('order' => 'id desc', 'limit' => 30, 'conditions' => array ('active = ? AND enable = ?', $active, PointGeter::IS_ENABLED))))));
-    }, $enableActives);
+    }, $enableActives));
 
     if (!write_file ($path, json_encode (array_merge (array (
         1, // v
