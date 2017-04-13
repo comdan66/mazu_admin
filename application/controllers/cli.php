@@ -21,7 +21,7 @@ class Cli extends Oa_controller {
     write_file (FCPATH . 'application/logs/query.log', '', FOPEN_READ_WRITE_CREATE_DESTRUCTIVE);
   }
   
-  public function test () {
+  public function gps () {
     $s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'gps')));
 
     if ($s && $s->v == '1') {
