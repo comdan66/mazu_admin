@@ -17,6 +17,7 @@ use LINE\LINEBot\Event\MessageEvent\StickerMessage;
 use LINE\LINEBot\Event\MessageEvent\LocationMessage;
 use LINE\LINEBot\Event\MessageEvent\ImageMessage;
 use LINE\LINEBot\Event\MessageEvent\AudioMessage;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 
 class Callback extends Api_controller {
 
@@ -25,7 +26,10 @@ class Callback extends Api_controller {
     
   }
   public function test () {
-    
+    $textMessageBuilder = new TextMessageBuilder ('hello');
+    $response = $bot->pushMessage ('<to>', $textMessageBuilder);
+
+    echo $response->getHTTPStatus () . ' ' . $response->getRawBody ();
   }
   public function index () {
     $path = FCPATH . 'temp/input.json';
