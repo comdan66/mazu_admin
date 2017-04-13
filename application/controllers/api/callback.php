@@ -152,7 +152,7 @@ class Callback extends Api_controller {
             $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('已經清除 TMP 資料夾！'));
           }
 
-          if (($line->text == '回報狀態') || ($line->text == '回報')) {
+          if (($line->text == '回報狀態') || ($line->text == '回報') || ($line->text == '狀態')) {
             $gps = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'gps')));
             $ons = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'ons')));
             $jsv = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'jsv')));
