@@ -24,6 +24,9 @@ class Callback extends Api_controller {
     parent::__construct ();
     
   }
+  public function test () {
+    
+  }
   public function index () {
     $path = FCPATH . 'temp/input.json';
     $channel_id = Cfg::setting ('line', 'channel', 'id');
