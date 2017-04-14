@@ -205,6 +205,7 @@ class Callback extends Api_controller {
           if (isset ($result['c'][0]) && $result['c'][0]) {
             $this->load->library ('PointGeter');
             PointGeter::up ();
+            $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('已經重跑！'));
           }
           if (($line->text == '提示') || ($line->text == '?')) {
 
@@ -217,7 +218,7 @@ class Callback extends Api_controller {
               '清除 tmp' . "\n" .
               '回報' . "\n" .
               '電力' . "\n" .
-              'run' . "\n" .
+              '重跑：run' . "\n" .
               '提示'
               ));
           }
