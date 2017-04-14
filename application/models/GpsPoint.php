@@ -28,8 +28,8 @@ class GpsPoint extends OaModel {
     self::ACTIVE_2 => '莊儀團',
   );
   static $activeGodRoadCodes = array (
-    self::ACTIVE_1 => '608069',
-    self::ACTIVE_2 => '608369',
+    self::ACTIVE_1 => '608368',
+    self::ACTIVE_2 => '608069',
   );
   static $activeIconUrl = array (
     self::ACTIVE_1 => 'https://pic.mazu.ioa.tw/icons/1.png',
