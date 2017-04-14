@@ -39,7 +39,7 @@ class Cli extends Oa_controller {
     $this->load->library ('PointGeter');
     PointGeter::up ();
   }
-  
+
   public function power ($code) {
     $this->load->library ('PointGeter');
 
@@ -86,7 +86,7 @@ class Cli extends Oa_controller {
       return GpsPoint::$activeNames[$active] . ":\n" . (is_array ($power) ? implode ("\n", $power) : $power);
     }, $enableActives)));
 
-    line::pushMessage (
+    Line::pushMessage (
       "目前狀態\n" .
       'GPS 排程：' . ($gps && $gps->v == '1' ? '打開' : '關閉') . "\n" .
       '開啟的 GPS：' . ($ons && $ons->v ? $ons->v : '沒有設定') . "\n" .
