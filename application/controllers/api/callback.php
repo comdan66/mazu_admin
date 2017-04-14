@@ -224,7 +224,7 @@ class Callback extends Api_controller {
             PointGeter::up ();
             $bot->replyMessage ($line->reply_token, new TextMessageBuilder ('已經重跑！'));
           }
-          if (($line->text == '提示') || ($line->text == '?')) {
+          if (($line->text == '提示') || ($line->text == '?') || ($line->text == '？')) {
 
             $bot->replyMessage ($line->reply_token, new TextMessageBuilder (
               "指令提示\n" .
