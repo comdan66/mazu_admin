@@ -171,13 +171,30 @@ class Callback extends Api_controller {
             $ons = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'ons')));
             $jsv = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'jsv')));
             $now = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'now')));
+       
+            $s = GpsSetting::find ('one', array ('conditions' => array ('k = ?', 'ons')));
+            if ($s && $s->v) {
+              $enableActives = array_filter (preg_split ("/[\s,]+/", $s->v));
+            } else {
+              $enableActives = array ();
+            }
+            $that = $this;
+            $data = array_values (array_filter (array_map (function ($active) use ($that) {
+              if (!(isset (GpsPoint::$activeNames[$active]) && isset (GpsPoint::$activeGodRoadCodes[$active]))) return null;
+              $power = $that->power (GpsPoint::$activeGodRoadCodes[$active]);
+
+              return GpsPoint::$activeNames[$active] . ":\n" . (is_array ($power) ? implode ("\n", $power) : $power);
+            }, $enableActives)));
+
 
             $bot->replyMessage ($line->reply_token, new TextMessageBuilder (
               "目前狀態\n" .
               'GPS 排程：' . ($gps && $gps->v == '1' ? '打開' : '關閉') . "\n" .
               '開啟的 GPS：' . ($ons && $ons->v ? $ons->v : '沒有設定') . "\n" .
               'JS 版本：' . ($jsv && $jsv->v ? $jsv->v : 0) . "\n" .
-              '目前路關：' . ($now && $now->v ? $now->v : 0)
+              '目前路關：' . ($now && $now->v ? $now->v : 0) . "\n" .
+              '-------' . "\n" .
+              implode("\n\n", $data)
               ));
           }
           if (($line->text == '電力') || ($line->text == '電')) {
