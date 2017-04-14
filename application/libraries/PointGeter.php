@@ -18,7 +18,7 @@ class PointGeter {
   );
 
   const MIN = 1;
-  const MAX = 500;
+  const MAX = 1000;
 
   public function __construct () {
   }
