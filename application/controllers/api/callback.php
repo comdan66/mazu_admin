@@ -201,6 +201,11 @@ class Callback extends Api_controller {
             else
               $bot->replyMessage ($line->reply_token, new TextMessageBuilder (implode("\n\n", $data)));
           }
+          preg_match_all ("/(?P<c>run)/i", $line->text, $result);
+          if (isset ($result['c'][0]) && $result['c'][0]) {
+            $this->load->library ('PointGeter');
+            PointGeter::up ();
+          }
           if (($line->text == '提示') || ($line->text == '?')) {
 
             $bot->replyMessage ($line->reply_token, new TextMessageBuilder (
@@ -212,6 +217,7 @@ class Callback extends Api_controller {
               '清除 tmp' . "\n" .
               '回報' . "\n" .
               '電力' . "\n" .
+              'run' . "\n" .
               '提示'
               ));
           }
